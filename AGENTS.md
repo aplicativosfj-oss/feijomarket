@@ -13,3 +13,4 @@
 - Catalog/payment access goes through `src/services/*` (mock today); swap implementations there to migrate to the backend without touching UI.
 - Store name and commercial constants live in `src/config/store.ts`; never hardcode them in components.
 - Cart/favorites state lives in `ShopProvider` (`src/lib/shop.tsx`), persisted to localStorage until accounts exist.
+- AI product recommendations run server-side in `src/lib/recommend.server.ts` via Lovable AI Gateway, restricted to catalog IDs; the client only calls `recommend.functions.ts`.

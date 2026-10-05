@@ -12,9 +12,23 @@ import leggings from "@/assets/p-leggings.jpg";
 import intimas from "@/assets/p-intimas.jpg";
 import impressao from "@/assets/p-impressao.jpg";
 import topobolo from "@/assets/p-topobolo.jpg";
+import rCamiseta from "@/assets/r-camiseta.jpg";
+import rCreatina from "@/assets/r-creatina.jpg";
+import rCropped from "@/assets/r-cropped.jpg";
+import rLegBasica from "@/assets/r-leg-basica.jpg";
+import rLegCirre from "@/assets/r-leg-cirre.jpg";
+import rLegEstampada from "@/assets/r-leg-estampada.jpg";
+import rLegFlare from "@/assets/r-leg-flare.jpg";
+import rLegScrunch from "@/assets/r-leg-scrunch.jpg";
+import rMacaquinho from "@/assets/r-macaquinho.jpg";
+import rShorts from "@/assets/r-shorts.jpg";
+import rTop from "@/assets/r-top.jpg";
+import rVestido from "@/assets/r-vestido.jpg";
+import rVitaminas from "@/assets/r-vitaminas.jpg";
+import rWhey from "@/assets/r-whey.jpg";
 import type { Category, CategorySlug, Product, Review } from "./types";
 
-const IMG = { whey, supp, clothes, shoes, audio, tech, home, beauty, sports, papelaria, leggings, intimas, impressao, topobolo };
+const IMG = { whey, supp, clothes, shoes, audio, tech, home, beauty, sports, papelaria, leggings, intimas, impressao, topobolo, rCamiseta, rCreatina, rCropped, rLegBasica, rLegCirre, rLegEstampada, rLegFlare, rLegScrunch, rMacaquinho, rShorts, rTop, rVestido, rVitaminas, rWhey };
 type ImgKey = keyof typeof IMG;
 
 export const CATEGORIES: Category[] = [
@@ -36,22 +50,22 @@ const SHOE_SIZES = ["37", "38", "39", "40", "41", "42", "43"];
 type Row = [string, CategorySlug, string, string, number, number, ImgKey, number, number, number, Product["tags"]];
 
 const ROWS: Row[] = [
-  ["Whey Protein Isolado 900g", "suplementos", "Whey", "MaxForce", 249.9, 199.9, "whey", 42, 4.8, 1284, ["bestseller", "deal"]],
-  ["Whey Protein Concentrado 1kg", "suplementos", "Whey", "Nutrion", 169.9, 0, "whey", 80, 4.6, 932, ["bestseller"]],
-  ["Whey 3W Blend 2kg", "suplementos", "Whey", "IronLab", 289.9, 259.9, "whey", 15, 4.5, 411, []],
-  ["Creatina Monohidratada 300g", "suplementos", "Creatina", "MaxForce", 129.9, 89.9, "supp", 120, 4.9, 2210, ["bestseller", "deal"]],
-  ["Creatina Creapure 250g", "suplementos", "Creatina", "Nutrion", 159.9, 0, "supp", 34, 4.8, 640, ["new"]],
-  ["Multivitamínico A-Z 120 caps", "suplementos", "Vitaminas", "VitaPlus", 79.9, 64.9, "supp", 200, 4.7, 518, []],
-  ["Vitamina D3 2000UI 60 caps", "suplementos", "Vitaminas", "VitaPlus", 39.9, 0, "supp", 150, 4.8, 870, []],
-  ["Ômega 3 1000mg 120 caps", "suplementos", "Vitaminas", "Nutrion", 69.9, 0, "supp", 0, 4.6, 302, []],
-  ["Pré-treino Explosion 300g", "suplementos", "Pré-treino", "IronLab", 149.9, 119.9, "whey", 25, 4.4, 377, ["deal"]],
-  ["Termogênico Burn Caps 60", "suplementos", "Termogênicos", "MaxForce", 99.9, 0, "supp", 60, 4.2, 210, ["new"]],
-  ["Camiseta Dry Fit Masculina", "roupas", "Masculino", "Franc Wear", 89.9, 69.9, "clothes", 90, 4.6, 450, ["bestseller"]],
-  ["Regata Performance Masculina", "roupas", "Masculino", "Pulse", 69.9, 0, "clothes", 45, 4.4, 128, []],
-  ["Legging Compressão Feminina", "roupas", "Feminino", "Franc Wear", 149.9, 119.9, "clothes", 70, 4.8, 812, ["bestseller", "deal"]],
-  ["Top Fitness Alta Sustentação", "roupas", "Feminino", "Pulse", 99.9, 0, "clothes", 38, 4.7, 333, ["new"]],
-  ["Conjunto Fitness Seamless", "roupas", "Fitness", "Pulse", 219.9, 179.9, "clothes", 22, 4.6, 190, ["new"]],
-  ["Shorts Treino 2 em 1", "roupas", "Fitness", "Franc Wear", 109.9, 0, "clothes", 55, 4.5, 221, []],
+  ["Whey Protein Isolado 900g", "suplementos", "Whey", "MaxForce", 249.9, 199.9, "rWhey", 42, 4.8, 1284, ["bestseller", "deal"]],
+  ["Whey Protein Concentrado 1kg", "suplementos", "Whey", "Nutrion", 169.9, 0, "rWhey", 80, 4.6, 932, ["bestseller"]],
+  ["Whey 3W Blend 2kg", "suplementos", "Whey", "IronLab", 289.9, 259.9, "rWhey", 15, 4.5, 411, []],
+  ["Creatina Monohidratada 300g", "suplementos", "Creatina", "MaxForce", 129.9, 89.9, "rCreatina", 120, 4.9, 2210, ["bestseller", "deal"]],
+  ["Creatina Creapure 250g", "suplementos", "Creatina", "Nutrion", 159.9, 0, "rCreatina", 34, 4.8, 640, ["new"]],
+  ["Multivitamínico A-Z 120 caps", "suplementos", "Vitaminas", "VitaPlus", 79.9, 64.9, "rVitaminas", 200, 4.7, 518, []],
+  ["Vitamina D3 2000UI 60 caps", "suplementos", "Vitaminas", "VitaPlus", 39.9, 0, "rVitaminas", 150, 4.8, 870, []],
+  ["Ômega 3 1000mg 120 caps", "suplementos", "Vitaminas", "Nutrion", 69.9, 0, "rVitaminas", 0, 4.6, 302, []],
+  ["Pré-treino Explosion 300g", "suplementos", "Pré-treino", "IronLab", 149.9, 119.9, "rWhey", 25, 4.4, 377, ["deal"]],
+  ["Termogênico Burn Caps 60", "suplementos", "Termogênicos", "MaxForce", 99.9, 0, "rVitaminas", 60, 4.2, 210, ["new"]],
+  ["Camiseta Dry Fit Masculina", "roupas", "Masculino", "Franc Wear", 89.9, 69.9, "rCamiseta", 90, 4.6, 450, ["bestseller"]],
+  ["Regata Performance Masculina", "roupas", "Masculino", "Pulse", 69.9, 0, "rCamiseta", 45, 4.4, 128, []],
+  ["Legging Compressão Feminina", "roupas", "Feminino", "Franc Wear", 149.9, 119.9, "rLegBasica", 70, 4.8, 812, ["bestseller", "deal"]],
+  ["Top Fitness Alta Sustentação", "roupas", "Feminino", "Pulse", 99.9, 0, "rTop", 38, 4.7, 333, ["new"]],
+  ["Conjunto Fitness Seamless", "roupas", "Fitness", "Pulse", 219.9, 179.9, "rTop", 22, 4.6, 190, ["new"]],
+  ["Shorts Treino 2 em 1", "roupas", "Fitness", "Franc Wear", 109.9, 0, "rShorts", 55, 4.5, 221, []],
   ["Tênis Corrida Velocity", "calcados", "Corrida", "Stride", 499.9, 399.9, "shoes", 30, 4.8, 640, ["bestseller", "deal"]],
   ["Tênis Corrida Cloud Run", "calcados", "Corrida", "AeroStep", 649.9, 0, "shoes", 12, 4.7, 288, ["new"]],
   ["Tênis Treino Cross Grip", "calcados", "Treino", "Stride", 389.9, 349.9, "shoes", 40, 4.6, 302, []],
@@ -92,17 +106,17 @@ const ROWS: Row[] = [
   ["Kit Volta às Aulas 2027 Fundamental", "papelaria", "Kits volta às aulas", "Franc Paper", 189.9, 149.9, "papelaria", 100, 4.8, 340, ["new", "deal"]],
   ["Kit Volta às Aulas 2027 Universitário", "papelaria", "Kits volta às aulas", "Franc Paper", 249.9, 199.9, "papelaria", 80, 4.9, 210, ["new", "bestseller"]],
   // Roupas femininas
-  ["Legging Cintura Alta Básica", "roupas", "Leggings", "Franc Wear", 79.9, 64.9, "leggings", 150, 4.7, 1120, ["bestseller", "deal"]],
-  ["Legging Empina Bumbum (Scrunch)", "roupas", "Leggings", "Pulse", 119.9, 99.9, "leggings", 90, 4.8, 980, ["bestseller"]],
-  ["Legging Flare Cintura Alta", "roupas", "Leggings", "Bella Fit", 129.9, 0, "leggings", 70, 4.6, 410, ["new"]],
-  ["Legging Estampada Floral", "roupas", "Leggings", "Bella Fit", 99.9, 0, "leggings", 60, 4.5, 260, ["new"]],
-  ["Legging Térmica Peluciada", "roupas", "Leggings", "Franc Wear", 139.9, 109.9, "leggings", 45, 4.7, 330, ["deal"]],
-  ["Legging com Bolso Lateral", "roupas", "Leggings", "Pulse", 109.9, 0, "leggings", 80, 4.8, 540, []],
-  ["Legging Cirré Efeito Couro", "roupas", "Leggings", "Bella Fit", 149.9, 0, "leggings", 35, 4.6, 190, ["new"]],
-  ["Bermuda Biker Feminina", "roupas", "Feminino", "Pulse", 69.9, 59.9, "leggings", 100, 4.6, 380, []],
-  ["Macaquinho Fitness Feminino", "roupas", "Feminino", "Bella Fit", 159.9, 0, "clothes", 40, 4.7, 220, ["new"]],
-  ["Cropped Canelado Feminino", "roupas", "Feminino", "Franc Wear", 49.9, 0, "clothes", 120, 4.5, 310, []],
-  ["Vestido Midi Canelado", "roupas", "Feminino", "Bella Fit", 139.9, 119.9, "clothes", 30, 4.6, 150, ["deal"]],
+  ["Legging Cintura Alta Básica", "roupas", "Leggings", "Franc Wear", 79.9, 64.9, "rLegBasica", 150, 4.7, 1120, ["bestseller", "deal"]],
+  ["Legging Empina Bumbum (Scrunch)", "roupas", "Leggings", "Pulse", 119.9, 99.9, "rLegScrunch", 90, 4.8, 980, ["bestseller"]],
+  ["Legging Flare Cintura Alta", "roupas", "Leggings", "Bella Fit", 129.9, 0, "rLegFlare", 70, 4.6, 410, ["new"]],
+  ["Legging Estampada Floral", "roupas", "Leggings", "Bella Fit", 99.9, 0, "rLegEstampada", 60, 4.5, 260, ["new"]],
+  ["Legging Térmica Peluciada", "roupas", "Leggings", "Franc Wear", 139.9, 109.9, "rLegBasica", 45, 4.7, 330, ["deal"]],
+  ["Legging com Bolso Lateral", "roupas", "Leggings", "Pulse", 109.9, 0, "rLegBasica", 80, 4.8, 540, []],
+  ["Legging Cirré Efeito Couro", "roupas", "Leggings", "Bella Fit", 149.9, 0, "rLegCirre", 35, 4.6, 190, ["new"]],
+  ["Bermuda Biker Feminina", "roupas", "Feminino", "Pulse", 69.9, 59.9, "rShorts", 100, 4.6, 380, []],
+  ["Macaquinho Fitness Feminino", "roupas", "Feminino", "Bella Fit", 159.9, 0, "rMacaquinho", 40, 4.7, 220, ["new"]],
+  ["Cropped Canelado Feminino", "roupas", "Feminino", "Franc Wear", 49.9, 0, "rCropped", 120, 4.5, 310, []],
+  ["Vestido Midi Canelado", "roupas", "Feminino", "Bella Fit", 139.9, 119.9, "rVestido", 30, 4.6, 150, ["deal"]],
   ["Kit 5 Calcinhas Algodão", "roupas", "Moda íntima", "Íntima Co.", 69.9, 54.9, "intimas", 200, 4.7, 1340, ["bestseller", "deal"]],
   ["Kit 3 Calcinhas Sem Costura", "roupas", "Moda íntima", "Íntima Co.", 59.9, 0, "intimas", 150, 4.8, 870, ["bestseller"]],
   ["Sutiã Sem Aro Conforto", "roupas", "Moda íntima", "Íntima Co.", 79.9, 0, "intimas", 90, 4.6, 520, []],

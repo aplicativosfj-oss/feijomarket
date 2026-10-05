@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Heart, Menu, Moon, Search, ShoppingBag, Sun, User } from "lucide-react";
+import { Heart, Menu, Moon, Search, ShoppingBag, Sparkles, Sun, User } from "lucide-react";
 import { STORE } from "@/config/store";
 import { catalog, effectivePrice } from "@/services/catalog";
 import { useShop } from "@/lib/shop";
@@ -165,6 +165,9 @@ export function SiteHeader() {
         </div>
 
         <div className="ml-auto flex items-center gap-1">
+          <Link to="/assistente" aria-label="Assistente de compras com IA" className="hidden items-center gap-1.5 rounded-full bg-accent/10 px-3 py-2 text-sm font-medium text-accent hover:bg-accent/20 md:inline-flex">
+            <Sparkles className="h-4 w-4" aria-hidden /> Assistente IA
+          </Link>
           <ThemeToggle />
           <Link to="/favoritos" aria-label={`Favoritos (${favorites.length})`} className="relative hidden h-10 w-10 place-items-center rounded-full hover:bg-secondary sm:grid">
             <Heart className="h-5 w-5" />
