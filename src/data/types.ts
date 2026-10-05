@@ -5,7 +5,8 @@ export type CategorySlug =
   | "eletronicos"
   | "casa"
   | "beleza-e-saude"
-  | "esportes";
+  | "esportes"
+  | "papelaria";
 
 export interface Category {
   slug: CategorySlug;
