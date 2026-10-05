@@ -1,0 +1,136 @@
+import whey from "@/assets/p-whey.jpg";
+import supp from "@/assets/p-supp.jpg";
+import clothes from "@/assets/p-clothes.jpg";
+import shoes from "@/assets/p-shoes.jpg";
+import audio from "@/assets/p-audio.jpg";
+import tech from "@/assets/p-tech.jpg";
+import home from "@/assets/p-home.jpg";
+import beauty from "@/assets/p-beauty.jpg";
+import sports from "@/assets/p-sports.jpg";
+import type { Category, CategorySlug, Product, Review } from "./types";
+
+const IMG = { whey, supp, clothes, shoes, audio, tech, home, beauty, sports };
+type ImgKey = keyof typeof IMG;
+
+export const CATEGORIES: Category[] = [
+  { slug: "suplementos", name: "Suplementos", subcategories: ["Whey", "Creatina", "Vitaminas", "Pré-treino", "Termogênicos"], image: supp },
+  { slug: "roupas", name: "Roupas", subcategories: ["Masculino", "Feminino", "Fitness"], image: clothes },
+  { slug: "calcados", name: "Calçados", subcategories: ["Corrida", "Treino", "Casual"], image: shoes },
+  { slug: "eletronicos", name: "Eletrônicos", subcategories: ["Fones", "Smartwatches", "Celulares", "Acessórios"], image: audio },
+  { slug: "casa", name: "Casa", subcategories: ["Cozinha", "Decoração", "Organização"], image: home },
+  { slug: "beleza-e-saude", name: "Beleza e Saúde", subcategories: ["Skincare", "Cabelo", "Bem-estar"], image: beauty },
+  { slug: "esportes", name: "Esportes", subcategories: ["Musculação", "Yoga", "Outdoor"], image: sports },
+];
+
+const FLAVORS = { label: "Sabor", options: ["Chocolate", "Baunilha", "Morango", "Cookies"] };
+const SIZES = ["P", "M", "G", "GG"];
+const SHOE_SIZES = ["37", "38", "39", "40", "41", "42", "43"];
+
+// [nome, categoria, sub, marca, preço, promo|0, imagem, estoque, nota, nº avaliações, tags]
+type Row = [string, CategorySlug, string, string, number, number, ImgKey, number, number, number, Product["tags"]];
+
+const ROWS: Row[] = [
+  ["Whey Protein Isolado 900g", "suplementos", "Whey", "MaxForce", 249.9, 199.9, "whey", 42, 4.8, 1284, ["bestseller", "deal"]],
+  ["Whey Protein Concentrado 1kg", "suplementos", "Whey", "Nutrion", 169.9, 0, "whey", 80, 4.6, 932, ["bestseller"]],
+  ["Whey 3W Blend 2kg", "suplementos", "Whey", "IronLab", 289.9, 259.9, "whey", 15, 4.5, 411, []],
+  ["Creatina Monohidratada 300g", "suplementos", "Creatina", "MaxForce", 129.9, 89.9, "supp", 120, 4.9, 2210, ["bestseller", "deal"]],
+  ["Creatina Creapure 250g", "suplementos", "Creatina", "Nutrion", 159.9, 0, "supp", 34, 4.8, 640, ["new"]],
+  ["Multivitamínico A-Z 120 caps", "suplementos", "Vitaminas", "VitaPlus", 79.9, 64.9, "supp", 200, 4.7, 518, []],
+  ["Vitamina D3 2000UI 60 caps", "suplementos", "Vitaminas", "VitaPlus", 39.9, 0, "supp", 150, 4.8, 870, []],
+  ["Ômega 3 1000mg 120 caps", "suplementos", "Vitaminas", "Nutrion", 69.9, 0, "supp", 0, 4.6, 302, []],
+  ["Pré-treino Explosion 300g", "suplementos", "Pré-treino", "IronLab", 149.9, 119.9, "whey", 25, 4.4, 377, ["deal"]],
+  ["Termogênico Burn Caps 60", "suplementos", "Termogênicos", "MaxForce", 99.9, 0, "supp", 60, 4.2, 210, ["new"]],
+  ["Camiseta Dry Fit Masculina", "roupas", "Masculino", "Franc Wear", 89.9, 69.9, "clothes", 90, 4.6, 450, ["bestseller"]],
+  ["Regata Performance Masculina", "roupas", "Masculino", "Pulse", 69.9, 0, "clothes", 45, 4.4, 128, []],
+  ["Legging Compressão Feminina", "roupas", "Feminino", "Franc Wear", 149.9, 119.9, "clothes", 70, 4.8, 812, ["bestseller", "deal"]],
+  ["Top Fitness Alta Sustentação", "roupas", "Feminino", "Pulse", 99.9, 0, "clothes", 38, 4.7, 333, ["new"]],
+  ["Conjunto Fitness Seamless", "roupas", "Fitness", "Pulse", 219.9, 179.9, "clothes", 22, 4.6, 190, ["new"]],
+  ["Shorts Treino 2 em 1", "roupas", "Fitness", "Franc Wear", 109.9, 0, "clothes", 55, 4.5, 221, []],
+  ["Tênis Corrida Velocity", "calcados", "Corrida", "Stride", 499.9, 399.9, "shoes", 30, 4.8, 640, ["bestseller", "deal"]],
+  ["Tênis Corrida Cloud Run", "calcados", "Corrida", "AeroStep", 649.9, 0, "shoes", 12, 4.7, 288, ["new"]],
+  ["Tênis Treino Cross Grip", "calcados", "Treino", "Stride", 389.9, 349.9, "shoes", 40, 4.6, 302, []],
+  ["Tênis Casual Urban", "calcados", "Casual", "AeroStep", 299.9, 0, "shoes", 65, 4.4, 154, []],
+  ["Chinelo Slide Recovery", "calcados", "Casual", "Stride", 129.9, 99.9, "shoes", 100, 4.5, 410, ["deal"]],
+  ["Fone Bluetooth ANC Pro", "eletronicos", "Fones", "Sonix", 899.9, 699.9, "audio", 18, 4.8, 940, ["bestseller", "deal"]],
+  ["Fone Esportivo TWS Sport", "eletronicos", "Fones", "Sonix", 349.9, 0, "audio", 60, 4.5, 612, ["bestseller"]],
+  ["Headphone Studio Wireless", "eletronicos", "Fones", "Volta", 1199.9, 0, "audio", 9, 4.7, 205, ["new"]],
+  ["Smartwatch Fit GPS", "eletronicos", "Smartwatches", "Pulsar", 1299.9, 1049.9, "tech", 25, 4.6, 488, ["deal"]],
+  ["Smartwatch Active Lite", "eletronicos", "Smartwatches", "Pulsar", 499.9, 0, "tech", 70, 4.3, 360, []],
+  ["Smartphone Nova X 256GB", "eletronicos", "Celulares", "Nova", 3499.9, 2999.9, "tech", 14, 4.7, 721, ["bestseller"]],
+  ["Smartphone Nova Lite 128GB", "eletronicos", "Celulares", "Nova", 1799.9, 0, "tech", 33, 4.4, 298, ["new"]],
+  ["Carregador Turbo 65W USB-C", "eletronicos", "Acessórios", "Volta", 179.9, 139.9, "tech", 140, 4.6, 520, []],
+  ["Garrafa Térmica Inox 750ml", "casa", "Cozinha", "Hōme", 129.9, 99.9, "home", 85, 4.8, 670, ["bestseller", "deal"]],
+  ["Caneca Cerâmica Artesanal", "casa", "Cozinha", "Hōme", 59.9, 0, "home", 50, 4.6, 140, []],
+  ["Difusor de Aromas Bambu", "casa", "Decoração", "Hōme", 89.9, 0, "home", 40, 4.5, 112, ["new"]],
+  ["Kit Potes Herméticos 6 pçs", "casa", "Organização", "Casa Viva", 149.9, 119.9, "home", 0, 4.4, 230, []],
+  ["Sérum Vitamina C 30ml", "beleza-e-saude", "Skincare", "Derma Pure", 119.9, 89.9, "beauty", 75, 4.7, 890, ["bestseller", "deal"]],
+  ["Hidratante Facial FPS 30", "beleza-e-saude", "Skincare", "Derma Pure", 79.9, 0, "beauty", 95, 4.6, 410, []],
+  ["Shampoo Fortalecedor 300ml", "beleza-e-saude", "Cabelo", "Natura Lab", 49.9, 0, "beauty", 110, 4.4, 198, ["new"]],
+  ["Óleo de Massagem Relax", "beleza-e-saude", "Bem-estar", "Natura Lab", 69.9, 59.9, "beauty", 44, 4.5, 156, []],
+  ["Kit Halteres Emborrachados 2x5kg", "esportes", "Musculação", "IronFit", 219.9, 189.9, "sports", 28, 4.7, 340, ["bestseller"]],
+  ["Tapete Yoga Antiderrapante", "esportes", "Yoga", "Zen Move", 139.9, 0, "sports", 60, 4.6, 402, []],
+  ["Corda de Pular Rolamento", "esportes", "Musculação", "IronFit", 49.9, 39.9, "sports", 150, 4.5, 288, ["deal"]],
+  ["Faixas Elásticas Kit 5", "esportes", "Musculação", "Zen Move", 79.9, 0, "sports", 90, 4.6, 310, ["new"]],
+  ["Mochila Trilha 30L", "esportes", "Outdoor", "Outpeak", 279.9, 229.9, "sports", 20, 4.7, 176, []],
+];
+
+const slugify = (s: string) =>
+  s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+const NAMES = ["Ana P.", "Bruno S.", "Carla M.", "Diego R.", "Eduarda L.", "Felipe T."];
+const TEXTS = [
+  "Produto excelente, chegou antes do prazo e bem embalado.",
+  "Ótimo custo-benefício, recomendo demais!",
+  "Qualidade acima do esperado. Comprarei novamente.",
+  "Bom produto, atendeu o que prometia.",
+];
+
+function reviewsFor(i: number, rating: number): Review[] {
+  return [0, 1, 2].map((k) => ({
+    author: NAMES[(i + k) % NAMES.length],
+    rating: Math.max(3, Math.min(5, Math.round(rating - (k === 2 ? 1 : 0)))),
+    date: `2026-0${((i + k) % 8) + 1}-1${k}`,
+    text: TEXTS[(i + k) % TEXTS.length],
+  }));
+}
+
+function variantsFor(cat: CategorySlug, sub: string) {
+  if (cat === "suplementos" && ["Whey", "Pré-treino"].includes(sub)) return { variants: [FLAVORS] };
+  if (cat === "roupas") return { variants: [{ label: "Tamanho", options: SIZES }, { label: "Cor", options: ["Preto", "Grafite", "Verde"] }], sizes: SIZES, colors: ["Preto", "Grafite", "Verde"] };
+  if (cat === "calcados") return { variants: [{ label: "Tamanho", options: SHOE_SIZES }, { label: "Cor", options: ["Preto/Verde", "Preto"] }], sizes: SHOE_SIZES, colors: ["Preto"] };
+  if (cat === "eletronicos") return { variants: [{ label: "Cor", options: ["Preto", "Grafite"] }], colors: ["Preto", "Grafite"] };
+  return { variants: [] };
+}
+
+export const PRODUCTS: Product[] = ROWS.map(([name, category, subcategory, brand, price, sale, img, stock, rating, reviewCount, tags], i) => {
+  const v = variantsFor(category, subcategory);
+  const others = (Object.keys(IMG) as ImgKey[]).filter((k) => k !== img);
+  return {
+    id: `p${String(i + 1).padStart(3, "0")}`,
+    slug: slugify(name),
+    name,
+    brand,
+    category,
+    subcategory,
+    description: `${name} da ${brand}: desenvolvido para quem busca qualidade e desempenho no dia a dia. Materiais selecionados, acabamento premium e garantia de procedência. Ideal para ${subcategory.toLowerCase()} e para elevar sua rotina.`,
+    price,
+    salePrice: sale || undefined,
+    stock,
+    rating,
+    reviewCount,
+    images: [IMG[img], IMG[img], IMG[others[i % others.length]]],
+    ...v,
+    specs: {
+      Marca: brand,
+      Categoria: subcategory,
+      "Código": `FS-${1000 + i}`,
+      Garantia: category === "eletronicos" ? "12 meses" : "90 dias",
+      Origem: "Nacional",
+    },
+    tags,
+    reviews: reviewsFor(i, rating),
+    source: "own",
+  };
+});
+
+export const BRANDS = Array.from(new Set(PRODUCTS.map((p) => p.brand))).sort();
