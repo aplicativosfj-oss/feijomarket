@@ -167,7 +167,7 @@ function variantsFor(cat: CategorySlug, sub: string) {
 
 export const PRODUCTS: Product[] = ROWS.map(([name, category, subcategory, brand, price, sale, img, stock, rating, reviewCount, tags], i) => {
   const v = variantsFor(category, subcategory);
-  const others = (Object.keys(IMG) as ImgKey[]).filter((k) => k !== img);
+  const catImg = CATEGORIES.find((c) => c.slug === category)!.image;
   return {
     id: `p${String(i + 1).padStart(3, "0")}`,
     slug: slugify(name),
@@ -181,7 +181,7 @@ export const PRODUCTS: Product[] = ROWS.map(([name, category, subcategory, brand
     stock,
     rating,
     reviewCount,
-    images: [IMG[img], IMG[img], IMG[others[i % others.length]]],
+    images: catImg === IMG[img] ? [IMG[img]] : [IMG[img], catImg],
     ...v,
     specs: {
       Marca: brand,
