@@ -11,6 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { STORE } from "@/config/store";
 import { ShopProvider } from "@/lib/shop";
 import { SiteHeader } from "@/components/store/SiteHeader";
 import { SiteFooter } from "@/components/store/SiteFooter";
@@ -84,9 +85,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Franc Store" },
-      { name: "description", content: "Suplementos, moda fitness, tênis e eletrônicos com frete grátis e 5% off no Pix." },
-      { property: "og:site_name", content: "Franc Store" },
+      { title: STORE.name },
+      { name: "description", content: "Suplementos, moda fitness, papelaria, tênis e eletrônicos com frete grátis e 5% off no Pix." },
+      { property: "og:site_name", content: STORE.name },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
           ],
