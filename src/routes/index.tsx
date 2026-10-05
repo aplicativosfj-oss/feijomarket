@@ -130,7 +130,7 @@ function Home() {
       </section>
 
       <Section title="Compre por categoria">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
           {cats.map((c) => (
             <Link key={c.slug} to="/categoria/$slug" params={{ slug: c.slug }} className="group text-center">
               <div className="aspect-square overflow-hidden rounded-2xl bg-secondary">
@@ -153,6 +153,18 @@ function Home() {
       <Section title="Lançamentos">
         <ProductGrid products={catalog.byTag("new", 4)} />
       </Section>
+
+      <section className="container-store mt-20">
+        <div className="flex flex-col gap-6 rounded-3xl bg-accent-soft p-8 md:flex-row md:items-center md:justify-between md:p-12">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-wider text-accent">Volta às aulas 2027</span>
+            <h2 className="mt-2 text-3xl font-bold md:text-4xl">Papelaria completa para o ano letivo</h2>
+            <p className="mt-2 text-muted-foreground">Cadernos, planners 2027, canetas, mochilas e kits prontos com até 20% off.</p>
+          </div>
+          <Button variant="accent" size="lg" asChild><Link to="/categoria/$slug" params={{ slug: "papelaria" }}>Ver papelaria <ArrowRight /></Link></Button>
+        </div>
+        <div className="mt-8"><ProductGrid products={catalog.all().filter((p) => p.category === "papelaria").slice(0, 4)} /></div>
+      </section>
 
       <Section title="Marcas que você ama">
         <div className="flex flex-wrap justify-center gap-3">
