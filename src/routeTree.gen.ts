@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BuscaRouteImport } from './routes/busca'
 import { Route as CarrinhoRouteImport } from './routes/carrinho'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as FavoritosRouteImport } from './routes/favoritos'
 import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
 import { Route as PaginaSlugRouteImport } from './routes/pagina.$slug'
@@ -30,6 +31,11 @@ const BuscaRoute = BuscaRouteImport.update({
 const CarrinhoRoute = CarrinhoRouteImport.update({
   id: '/carrinho',
   path: '/carrinho',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FavoritosRoute = FavoritosRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/busca': typeof BuscaRoute
   '/carrinho': typeof CarrinhoRoute
+  '/checkout': typeof CheckoutRoute
   '/favoritos': typeof FavoritosRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/pagina/$slug': typeof PaginaSlugRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/busca': typeof BuscaRoute
   '/carrinho': typeof CarrinhoRoute
+  '/checkout': typeof CheckoutRoute
   '/favoritos': typeof FavoritosRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/pagina/$slug': typeof PaginaSlugRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/busca': typeof BuscaRoute
   '/carrinho': typeof CarrinhoRoute
+  '/checkout': typeof CheckoutRoute
   '/favoritos': typeof FavoritosRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/pagina/$slug': typeof PaginaSlugRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/busca'
     | '/carrinho'
+    | '/checkout'
     | '/favoritos'
     | '/categoria/$slug'
     | '/pagina/$slug'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/busca'
     | '/carrinho'
+    | '/checkout'
     | '/favoritos'
     | '/categoria/$slug'
     | '/pagina/$slug'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/busca'
     | '/carrinho'
+    | '/checkout'
     | '/favoritos'
     | '/categoria/$slug'
     | '/pagina/$slug'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BuscaRoute: typeof BuscaRoute
   CarrinhoRoute: typeof CarrinhoRoute
+  CheckoutRoute: typeof CheckoutRoute
   FavoritosRoute: typeof FavoritosRoute
   CategoriaSlugRoute: typeof CategoriaSlugRoute
   PaginaSlugRoute: typeof PaginaSlugRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/carrinho'
       fullPath: '/carrinho'
       preLoaderRoute: typeof CarrinhoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/favoritos': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BuscaRoute: BuscaRoute,
   CarrinhoRoute: CarrinhoRoute,
+  CheckoutRoute: CheckoutRoute,
   FavoritosRoute: FavoritosRoute,
   CategoriaSlugRoute: CategoriaSlugRoute,
   PaginaSlugRoute: PaginaSlugRoute,

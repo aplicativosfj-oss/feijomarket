@@ -8,3 +8,8 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Architecture rules
+- Catalog/payment access goes through `src/services/*` (mock today); swap implementations there to migrate to the backend without touching UI.
+- Store name and commercial constants live in `src/config/store.ts`; never hardcode them in components.
+- Cart/favorites state lives in `ShopProvider` (`src/lib/shop.tsx`), persisted to localStorage until accounts exist.
