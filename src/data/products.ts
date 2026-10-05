@@ -146,6 +146,12 @@ function reviewsFor(i: number, rating: number): Review[] {
   }));
 }
 
+const SERVICE_NOTES: Record<string, string> = {
+  "Topos de bolo": "Personalizado com o nome, a idade e o tema que você escolher. Após a compra, envie os dados e fotos pelo WhatsApp; a arte é aprovada por você antes da produção. Prazo de produção: 2 a 4 dias úteis.",
+  "Encadernação": "Envie seu arquivo em PDF pelo WhatsApp ou e-mail após a compra. Imprimimos (se necessário) e encadernamos com acabamento profissional. Prazo: 1 a 2 dias úteis + frete ou retirada.",
+  "Impressão online": "Xerox online: compre a quantidade de páginas desejada e envie seu arquivo em PDF pelo WhatsApp ou e-mail. Conferimos o arquivo antes de imprimir. Prazo: 1 dia útil + frete ou retirada.",
+};
+
 function variantsFor(cat: CategorySlug, sub: string) {
   if (cat === "suplementos" && ["Whey", "Pré-treino"].includes(sub)) return { variants: [FLAVORS] };
   if (sub === "Topos de bolo") return { variants: [{ label: "Tema", options: ["Aniversário", "Infantil", "Futebol", "Princesas", "Chá revelação", "Casamento"] }] };
@@ -169,7 +175,7 @@ export const PRODUCTS: Product[] = ROWS.map(([name, category, subcategory, brand
     brand,
     category,
     subcategory,
-    description: `${name} da ${brand}: desenvolvido para quem busca qualidade e desempenho no dia a dia. Materiais selecionados, acabamento premium e garantia de procedência. Ideal para ${subcategory.toLowerCase()} e para elevar sua rotina.`,
+    description: SERVICE_NOTES[subcategory] ? `${name}. ${SERVICE_NOTES[subcategory]}` : `${name} da ${brand}: desenvolvido para quem busca qualidade e desempenho no dia a dia. Materiais selecionados, acabamento premium e garantia de procedência. Ideal para ${subcategory.toLowerCase()} e para elevar sua rotina.`,
     price,
     salePrice: sale || undefined,
     stock,
@@ -182,7 +188,7 @@ export const PRODUCTS: Product[] = ROWS.map(([name, category, subcategory, brand
       Categoria: subcategory,
       "Código": `FS-${1000 + i}`,
       Garantia: category === "eletronicos" ? "12 meses" : "90 dias",
-      Origem: "Nacional",
+      Origem: SERVICE_NOTES[subcategory] ? "Serviço sob encomenda" : "Nacional",
     },
     tags,
     reviews: reviewsFor(i, rating),
