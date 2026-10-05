@@ -2,7 +2,7 @@ export const STORE = {
   name: "Feijó Market",
   tagline: "Tudo para o seu dia a dia — do Acre para o Brasil",
   whatsapp: "5500000000000", // TODO: substituir pelo número real
-  email: "contato@francstore.com.br", // TODO: substituir
+  email: "contato@feijomarket.com.br", // TODO: substituir
   freeShippingFrom: 299,
   maxInstallments: 10,
   pixDiscount: 0.05,
