@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Heart, Menu, Moon, Search, ShoppingBag, Sun, User } from "lucide-react";
+import { Heart, Menu, Moon, Search, ShoppingBag, Sparkles, Sun, User } from "lucide-react";
 import { STORE } from "@/config/store";
 import { catalog, effectivePrice } from "@/services/catalog";
 import { useShop } from "@/lib/shop";
