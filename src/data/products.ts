@@ -8,20 +8,24 @@ import home from "@/assets/p-home.jpg";
 import beauty from "@/assets/p-beauty.jpg";
 import sports from "@/assets/p-sports.jpg";
 import papelaria from "@/assets/p-papelaria.jpg";
+import leggings from "@/assets/p-leggings.jpg";
+import intimas from "@/assets/p-intimas.jpg";
+import impressao from "@/assets/p-impressao.jpg";
+import topobolo from "@/assets/p-topobolo.jpg";
 import type { Category, CategorySlug, Product, Review } from "./types";
 
-const IMG = { whey, supp, clothes, shoes, audio, tech, home, beauty, sports, papelaria };
+const IMG = { whey, supp, clothes, shoes, audio, tech, home, beauty, sports, papelaria, leggings, intimas, impressao, topobolo };
 type ImgKey = keyof typeof IMG;
 
 export const CATEGORIES: Category[] = [
   { slug: "suplementos", name: "Suplementos", subcategories: ["Whey", "Creatina", "Vitaminas", "Pré-treino", "Termogênicos"], image: supp },
-  { slug: "roupas", name: "Roupas", subcategories: ["Masculino", "Feminino", "Fitness"], image: clothes },
+  { slug: "roupas", name: "Roupas", subcategories: ["Feminino", "Leggings", "Moda íntima", "Masculino", "Fitness"], image: clothes },
   { slug: "calcados", name: "Calçados", subcategories: ["Corrida", "Treino", "Casual"], image: shoes },
   { slug: "eletronicos", name: "Eletrônicos", subcategories: ["Fones", "Smartwatches", "Celulares", "Acessórios"], image: audio },
   { slug: "casa", name: "Casa", subcategories: ["Cozinha", "Decoração", "Organização"], image: home },
   { slug: "beleza-e-saude", name: "Beleza e Saúde", subcategories: ["Skincare", "Cabelo", "Bem-estar"], image: beauty },
   { slug: "esportes", name: "Esportes", subcategories: ["Musculação", "Yoga", "Outdoor"], image: sports },
-  { slug: "papelaria", name: "Papelaria", subcategories: ["Cadernos", "Escrita", "Mochilas e estojos", "Organização", "Kits volta às aulas"], image: papelaria },
+  { slug: "papelaria", name: "Papelaria", subcategories: ["Cadernos", "Escrita", "Mochilas e estojos", "Organização", "Kits volta às aulas", "Topos de bolo", "Encadernação", "Impressão online"], image: papelaria },
 ];
 
 const FLAVORS = { label: "Sabor", options: ["Chocolate", "Baunilha", "Morango", "Cookies"] };
@@ -87,6 +91,39 @@ const ROWS: Row[] = [
   ["Fichário Universitário 4 Argolas", "papelaria", "Organização", "Caderno Co.", 89.9, 0, "papelaria", 70, 4.6, 215, []],
   ["Kit Volta às Aulas 2027 Fundamental", "papelaria", "Kits volta às aulas", "Franc Paper", 189.9, 149.9, "papelaria", 100, 4.8, 340, ["new", "deal"]],
   ["Kit Volta às Aulas 2027 Universitário", "papelaria", "Kits volta às aulas", "Franc Paper", 249.9, 199.9, "papelaria", 80, 4.9, 210, ["new", "bestseller"]],
+  // Roupas femininas
+  ["Legging Cintura Alta Básica", "roupas", "Leggings", "Franc Wear", 79.9, 64.9, "leggings", 150, 4.7, 1120, ["bestseller", "deal"]],
+  ["Legging Empina Bumbum (Scrunch)", "roupas", "Leggings", "Pulse", 119.9, 99.9, "leggings", 90, 4.8, 980, ["bestseller"]],
+  ["Legging Flare Cintura Alta", "roupas", "Leggings", "Bella Fit", 129.9, 0, "leggings", 70, 4.6, 410, ["new"]],
+  ["Legging Estampada Floral", "roupas", "Leggings", "Bella Fit", 99.9, 0, "leggings", 60, 4.5, 260, ["new"]],
+  ["Legging Térmica Peluciada", "roupas", "Leggings", "Franc Wear", 139.9, 109.9, "leggings", 45, 4.7, 330, ["deal"]],
+  ["Legging com Bolso Lateral", "roupas", "Leggings", "Pulse", 109.9, 0, "leggings", 80, 4.8, 540, []],
+  ["Legging Cirré Efeito Couro", "roupas", "Leggings", "Bella Fit", 149.9, 0, "leggings", 35, 4.6, 190, ["new"]],
+  ["Bermuda Biker Feminina", "roupas", "Feminino", "Pulse", 69.9, 59.9, "leggings", 100, 4.6, 380, []],
+  ["Macaquinho Fitness Feminino", "roupas", "Feminino", "Bella Fit", 159.9, 0, "clothes", 40, 4.7, 220, ["new"]],
+  ["Cropped Canelado Feminino", "roupas", "Feminino", "Franc Wear", 49.9, 0, "clothes", 120, 4.5, 310, []],
+  ["Vestido Midi Canelado", "roupas", "Feminino", "Bella Fit", 139.9, 119.9, "clothes", 30, 4.6, 150, ["deal"]],
+  ["Kit 5 Calcinhas Algodão", "roupas", "Moda íntima", "Íntima Co.", 69.9, 54.9, "intimas", 200, 4.7, 1340, ["bestseller", "deal"]],
+  ["Kit 3 Calcinhas Sem Costura", "roupas", "Moda íntima", "Íntima Co.", 59.9, 0, "intimas", 150, 4.8, 870, ["bestseller"]],
+  ["Sutiã Sem Aro Conforto", "roupas", "Moda íntima", "Íntima Co.", 79.9, 0, "intimas", 90, 4.6, 520, []],
+  ["Sutiã com Bojo Liso", "roupas", "Moda íntima", "Bella Fit", 89.9, 74.9, "intimas", 70, 4.5, 410, []],
+  ["Conjunto Renda Delicada", "roupas", "Moda íntima", "Bella Fit", 119.9, 0, "intimas", 40, 4.7, 260, ["new"]],
+  ["Body Modelador Feminino", "roupas", "Moda íntima", "Íntima Co.", 129.9, 109.9, "intimas", 35, 4.6, 180, ["new"]],
+  ["Pijama Feminino Algodão", "roupas", "Moda íntima", "Íntima Co.", 99.9, 0, "intimas", 60, 4.8, 290, []],
+  ["Kit 3 Meias Soquete", "roupas", "Moda íntima", "Franc Wear", 29.9, 0, "intimas", 300, 4.5, 640, []],
+  // Papelaria: personalizados e serviços
+  ["Topo de Bolo Personalizado (Tema à escolha)", "papelaria", "Topos de bolo", "Franc Festas", 34.9, 29.9, "topobolo", 999, 4.9, 760, ["bestseller", "deal"]],
+  ["Topo de Bolo 3D Camadas", "papelaria", "Topos de bolo", "Franc Festas", 54.9, 0, "topobolo", 999, 4.8, 320, ["new"]],
+  ["Topo de Bolo Acrílico Espelhado com Nome", "papelaria", "Topos de bolo", "Franc Festas", 69.9, 0, "topobolo", 999, 4.9, 210, ["new"]],
+  ["Kit Festa Personalizado (topo + 20 toppers)", "papelaria", "Topos de bolo", "Franc Festas", 89.9, 74.9, "topobolo", 999, 4.8, 180, []],
+  ["Encadernação Espiral até 100 folhas", "papelaria", "Encadernação", "Franc Print", 9.9, 0, "impressao", 999, 4.8, 640, ["bestseller"]],
+  ["Encadernação Espiral até 300 folhas", "papelaria", "Encadernação", "Franc Print", 14.9, 0, "impressao", 999, 4.8, 310, []],
+  ["Encadernação Wire-o Premium", "papelaria", "Encadernação", "Franc Print", 19.9, 0, "impressao", 999, 4.9, 150, ["new"]],
+  ["Encadernação Capa Dura (TCC)", "papelaria", "Encadernação", "Franc Print", 49.9, 44.9, "impressao", 999, 4.9, 220, ["deal"]],
+  ["Impressão Online P&B (por página)", "papelaria", "Impressão online", "Franc Print", 0.3, 0, "impressao", 99999, 4.7, 1980, ["bestseller"]],
+  ["Impressão Online Colorida (por página)", "papelaria", "Impressão online", "Franc Print", 1.2, 0, "impressao", 99999, 4.7, 1240, []],
+  ["Impressão de Apostila Completa (até 100 págs)", "papelaria", "Impressão online", "Franc Print", 29.9, 24.9, "impressao", 999, 4.8, 410, ["new", "deal"]],
+  ["Plastificação A4", "papelaria", "Impressão online", "Franc Print", 4.9, 0, "impressao", 999, 4.6, 190, []],
 ];
 
 const slugify = (s: string) =>
@@ -109,8 +146,19 @@ function reviewsFor(i: number, rating: number): Review[] {
   }));
 }
 
+const SERVICE_NOTES: Record<string, string> = {
+  "Topos de bolo": "Personalizado com o nome, a idade e o tema que você escolher. Após a compra, envie os dados e fotos pelo WhatsApp; a arte é aprovada por você antes da produção. Prazo de produção: 2 a 4 dias úteis.",
+  "Encadernação": "Envie seu arquivo em PDF pelo WhatsApp ou e-mail após a compra. Imprimimos (se necessário) e encadernamos com acabamento profissional. Prazo: 1 a 2 dias úteis + frete ou retirada.",
+  "Impressão online": "Xerox online: compre a quantidade de páginas desejada e envie seu arquivo em PDF pelo WhatsApp ou e-mail. Conferimos o arquivo antes de imprimir. Prazo: 1 dia útil + frete ou retirada.",
+};
+
 function variantsFor(cat: CategorySlug, sub: string) {
   if (cat === "suplementos" && ["Whey", "Pré-treino"].includes(sub)) return { variants: [FLAVORS] };
+  if (sub === "Topos de bolo") return { variants: [{ label: "Tema", options: ["Aniversário", "Infantil", "Futebol", "Princesas", "Chá revelação", "Casamento"] }] };
+  if (sub === "Encadernação") return { variants: [{ label: "Capa", options: ["Transparente", "Preta", "Personalizada"] }] };
+  if (sub === "Impressão online") return { variants: [{ label: "Papel", options: ["Sulfite 75g", "Sulfite 90g", "Couché 150g"] }, { label: "Lados", options: ["Frente", "Frente e verso"] }] };
+  if (sub === "Moda íntima") return { variants: [{ label: "Tamanho", options: SIZES }, { label: "Cor", options: ["Preto", "Nude", "Branco", "Mescla"] }], sizes: SIZES, colors: ["Preto", "Nude", "Branco", "Mescla"] };
+  if (sub === "Leggings") return { variants: [{ label: "Tamanho", options: SIZES }, { label: "Cor", options: ["Preto", "Grafite", "Verde", "Nude"] }], sizes: SIZES, colors: ["Preto", "Grafite", "Verde", "Nude"] };
   if (cat === "roupas") return { variants: [{ label: "Tamanho", options: SIZES }, { label: "Cor", options: ["Preto", "Grafite", "Verde"] }], sizes: SIZES, colors: ["Preto", "Grafite", "Verde"] };
   if (cat === "calcados") return { variants: [{ label: "Tamanho", options: SHOE_SIZES }, { label: "Cor", options: ["Preto/Verde", "Preto"] }], sizes: SHOE_SIZES, colors: ["Preto"] };
   if (cat === "eletronicos") return { variants: [{ label: "Cor", options: ["Preto", "Grafite"] }], colors: ["Preto", "Grafite"] };
@@ -119,7 +167,7 @@ function variantsFor(cat: CategorySlug, sub: string) {
 
 export const PRODUCTS: Product[] = ROWS.map(([name, category, subcategory, brand, price, sale, img, stock, rating, reviewCount, tags], i) => {
   const v = variantsFor(category, subcategory);
-  const others = (Object.keys(IMG) as ImgKey[]).filter((k) => k !== img);
+  const catImg = CATEGORIES.find((c) => c.slug === category)!.image;
   return {
     id: `p${String(i + 1).padStart(3, "0")}`,
     slug: slugify(name),
@@ -127,20 +175,20 @@ export const PRODUCTS: Product[] = ROWS.map(([name, category, subcategory, brand
     brand,
     category,
     subcategory,
-    description: `${name} da ${brand}: desenvolvido para quem busca qualidade e desempenho no dia a dia. Materiais selecionados, acabamento premium e garantia de procedência. Ideal para ${subcategory.toLowerCase()} e para elevar sua rotina.`,
+    description: SERVICE_NOTES[subcategory] ? `${name}. ${SERVICE_NOTES[subcategory]}` : `${name} da ${brand}: desenvolvido para quem busca qualidade e desempenho no dia a dia. Materiais selecionados, acabamento premium e garantia de procedência. Ideal para ${subcategory.toLowerCase()} e para elevar sua rotina.`,
     price,
     salePrice: sale || undefined,
     stock,
     rating,
     reviewCount,
-    images: [IMG[img], IMG[img], IMG[others[i % others.length]]],
+    images: catImg === IMG[img] ? [IMG[img]] : [IMG[img], catImg],
     ...v,
     specs: {
       Marca: brand,
       Categoria: subcategory,
       "Código": `FS-${1000 + i}`,
       Garantia: category === "eletronicos" ? "12 meses" : "90 dias",
-      Origem: "Nacional",
+      Origem: SERVICE_NOTES[subcategory] ? "Serviço sob encomenda" : "Nacional",
     },
     tags,
     reviews: reviewsFor(i, rating),
