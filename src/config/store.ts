@@ -1,6 +1,6 @@
 export const STORE = {
-  name: "Franc Store",
-  tagline: "Performance, tecnologia e estilo em um só lugar",
+  name: "Feijó Market",
+  tagline: "Tudo para o seu dia a dia — do Acre para o Brasil",
   whatsapp: "5500000000000", // TODO: substituir pelo número real
   email: "contato@francstore.com.br", // TODO: substituir
   freeShippingFrom: 299,
