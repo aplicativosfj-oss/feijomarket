@@ -13,6 +13,8 @@ import { STORE } from "@/config/store";
 import { payments, type PaymentMethod, type PaymentResult } from "@/services/payments";
 import { effectivePrice } from "@/services/catalog";
 import { cn } from "@/lib/utils";
+import { useServerFn } from "@tanstack/react-start";
+import { createOrder } from "@/lib/orders.functions";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -70,6 +72,7 @@ function errorsOf(r: z.SafeParseReturnType<unknown, unknown>) {
 
 function CheckoutPage() {
   const shop = useShop();
+  const submitOrder = useServerFn(createOrder);
   const [step, setStep] = useState(0);
   const [data, setData] = useState<Form>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -119,14 +122,27 @@ function CheckoutPage() {
       if (Object.keys(errs).length) return;
     }
     setPaying(true);
-    const orderId = `FS${Date.now().toString().slice(-8)}`;
     try {
-      const r = await payments.charge({ orderId, amount: total, method });
-      setResult({ orderId, pay: r, total });
+      // O pedido é registrado no servidor com os preços do banco.
+      const order = await submitOrder({
+        data: {
+          items: shop.lines.map((l) => ({ productId: l.productId, qty: l.qty, variant: l.options })),
+          customer: { name: data.name ?? "", email: data.email ?? "", phone: data.phone ?? "", cpf: data.cpf },
+          address: {
+            cep: data.cep ?? "", street: data.street ?? "", number: data.number ?? "", complement: data.complement ?? "",
+            district: data.district ?? "", city: data.city ?? "", state: data.state ?? "",
+          },
+          deliveryMethod: ship === "entrega" ? "entrega" : "retirada",
+          paymentMethod: method,
+          coupon: shop.coupon,
+        },
+      });
+      const r = await payments.charge({ orderId: order.code, amount: order.total, method });
+      setResult({ orderId: order.code, pay: r, total: order.total });
       shop.clear();
       setStep(4);
-    } catch {
-      toast.error("Não foi possível processar o pagamento. Tente novamente.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Não foi possível finalizar o pedido. Tente novamente.");
     } finally {
       setPaying(false);
     }
