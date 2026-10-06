@@ -26,7 +26,6 @@ const orderInput = z.object({
   deliveryMethod: z.enum(["entrega", "retirada"]),
   paymentMethod: z.enum(["pix", "card", "boleto"]),
   coupon: z.string().max(30).nullable().optional(),
-  userId: z.string().uuid().nullable().optional(),
 });
 
 export type CreateOrderInput = z.infer<typeof orderInput>;
@@ -71,7 +70,6 @@ export const createOrder = createServerFn({ method: "POST" })
     const code = `FM${Date.now().toString().slice(-8)}`;
     const { error: insErr } = await supabaseAdmin.from("orders").insert({
       code,
-      user_id: data.userId ?? null,
       customer_name: data.customer.name,
       customer_email: data.customer.email,
       customer_phone: data.customer.phone,
