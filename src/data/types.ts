@@ -6,7 +6,9 @@ export type CategorySlug =
   | "casa"
   | "beleza-e-saude"
   | "esportes"
-  | "papelaria";
+  | "papelaria"
+  // Categorias novas criadas no painel também são aceitas.
+  | (string & {});
 
 export interface Category {
   slug: CategorySlug;
