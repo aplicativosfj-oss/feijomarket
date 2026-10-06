@@ -1,9 +1,9 @@
 export const STORE = {
   name: "Feijó Market",
-  tagline: "Tudo para o seu dia a dia — do Acre para o Brasil",
-  whatsapp: "5500000000000", // TODO: substituir pelo número real
+  tagline: "Tudo para o seu dia a dia, aqui em Feijó",
+  whatsapp: "5568992031340",
   email: "contato@feijomarket.com.br", // TODO: substituir
-  freeShippingFrom: 299,
+  freeShippingFrom: 99.99, // entrega grátis em Feijó acima deste valor; abaixo, só retirada
   maxInstallments: 10,
   pixDiscount: 0.05,
 } as const;

@@ -56,7 +56,7 @@ export function CartDrawer() {
           <>
             <div className="px-4">
               <div className="rounded-xl bg-accent-soft p-3 text-xs">
-                {missing > 0 ? <>Faltam <b>{formatBRL(missing)}</b> para frete grátis</> : <b>Você ganhou frete grátis!</b>}
+                {missing > 0 ? <>Faltam <b>{formatBRL(missing)}</b> para entrega grátis</> : <b>Você ganhou entrega grátis em Feijó!</b>}
                 <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-background">
                   <div className="h-full bg-accent transition-all" style={{ width: `${Math.min(100, (subtotal / STORE.freeShippingFrom) * 100)}%` }} />
                 </div>
