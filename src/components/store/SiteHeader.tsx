@@ -122,7 +122,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-xl">
       <div className="bg-surface-dark py-2 text-center text-xs font-medium text-surface-dark-foreground">
-        Frete grátis acima de {formatBRL(STORE.freeShippingFrom)} · 5% off no Pix · Use <b className="text-accent">BEMVINDO10</b>
+        Entrega grátis em Feijó acima de {formatBRL(STORE.freeShippingFrom)} · 5% off no Pix · Use <b className="text-accent">BEMVINDO10</b>
       </div>
       <div className="container-store flex h-16 items-center gap-3 md:h-20 md:gap-6">
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>

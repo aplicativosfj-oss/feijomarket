@@ -30,7 +30,7 @@ const SLIDES = [
 ];
 
 const BENEFITS = [
-  { icon: Truck, title: "Frete grátis", text: `Acima de ${formatBRL(STORE.freeShippingFrom)}` },
+  { icon: Truck, title: "Entrega grátis em Feijó", text: `Acima de ${formatBRL(STORE.freeShippingFrom)}` },
   { icon: QrCode, title: "5% off no Pix", text: "Aprovação imediata" },
   { icon: CreditCard, title: "Até 10x sem juros", text: "Em todos os cartões" },
   { icon: ShieldCheck, title: "Compra segura", text: "Dados protegidos" },
