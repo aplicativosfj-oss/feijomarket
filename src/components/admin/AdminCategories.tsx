@@ -32,7 +32,7 @@ export function AdminCategories() {
   const save = async () => {
     if (!editing) return;
     const name = editing.name.trim();
-    if (!name) return toast.error("Informe o nome da categoria.");
+    if (!name) { toast.error("Informe o nome da categoria."); return; }
     const row = {
       slug: editing.isNew ? slugify(name) : editing.slug,
       name,
@@ -41,7 +41,7 @@ export function AdminCategories() {
       sort_order: editing.sort_order,
     };
     const { error } = await supabase.from("categories").upsert(row);
-    if (error) return toast.error(`Erro ao salvar: ${error.message}`);
+    if (error) { toast.error(`Erro ao salvar: ${error.message}`); return; }
     toast.success("Categoria salva!");
     setEditing(null);
     void reload();
@@ -50,7 +50,7 @@ export function AdminCategories() {
   const remove = async (c: DbCategory) => {
     if (!confirm(`Apagar a categoria "${c.name}"? Os produtos dela continuam salvos.`)) return;
     const { error } = await supabase.from("categories").delete().eq("slug", c.slug);
-    if (error) return toast.error(`Erro ao apagar: ${error.message}`);
+    if (error) { toast.error(`Erro ao apagar: ${error.message}`); return; }
     toast.success("Categoria apagada.");
     void reload();
   };

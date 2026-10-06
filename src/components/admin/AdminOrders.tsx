@@ -49,7 +49,7 @@ export function AdminOrders() {
     setLoading(true);
     const { data, error } = await supabase.from("orders").select("*").order("created_at", { ascending: false }).limit(200);
     setLoading(false);
-    if (error) return toast.error(`Erro ao carregar pedidos: ${error.message}`);
+    if (error) { toast.error(`Erro ao carregar pedidos: ${error.message}`); return; }
     setOrders((data ?? []) as unknown as Order[]);
   };
   useEffect(() => { void load(); }, []);
