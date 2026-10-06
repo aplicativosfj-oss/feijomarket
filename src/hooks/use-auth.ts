@@ -24,6 +24,8 @@ export function useAuth(): AuthState {
         setState({ session: null, isAdmin: false, loading: false });
         return;
       }
+      // Garante os papéis (cliente sempre; admin só para o e-mail do dono confirmado).
+      await supabase.rpc("claim_roles");
       const { data } = await supabase.rpc("has_role", { _user_id: session.user.id, _role: "admin" });
       if (active) setState({ session, isAdmin: data === true, loading: false });
     };
