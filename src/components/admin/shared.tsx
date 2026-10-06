@@ -14,7 +14,7 @@ export function Field({ label, children }: { label: string; children: ReactNode 
 
 export function Modal({ title, onClose, children }: { title: string; onClose: () => void; children: ReactNode }) {
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-foreground/50 p-4" role="dialog" aria-modal="true" aria-label={title}>
+    <div className="fixed inset-0 z-[60] grid place-items-center bg-foreground/50 p-4" role="dialog" aria-modal="true" aria-label={title}>
       <div className="max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl bg-background p-6 shadow-card">
         <div className="flex items-center justify-between">
           <h2 className="font-display text-lg font-bold">{title}</h2>

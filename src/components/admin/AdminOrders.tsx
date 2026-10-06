@@ -16,6 +16,30 @@ export const ORDER_STATUS = {
 } as const;
 type Status = keyof typeof ORDER_STATUS;
 
+const STATUS_COLOR: Record<Status, string> = {
+  pendente: "bg-amber-100 text-amber-900",
+  confirmado: "bg-sky-100 text-sky-900",
+  em_preparo: "bg-violet-100 text-violet-900",
+  saiu_para_entrega: "bg-blue-100 text-blue-900",
+  pronto_para_retirada: "bg-teal-100 text-teal-900",
+  entregue: "bg-emerald-100 text-emerald-900",
+  cancelado: "bg-zinc-200 text-zinc-700",
+};
+
+/** Celular do cliente no formato internacional usado pelo WhatsApp (55 + DDD + número). */
+export function waNumber(phone: string): string {
+  const digits = phone.replace(/\D/g, "");
+  return digits.startsWith("55") && digits.length >= 12 ? digits : `55${digits}`;
+}
+
+/** (68) 99203-1340 a partir de qualquer formato digitado no checkout. */
+export function formatPhoneBR(phone: string): string {
+  const d = waNumber(phone).slice(2);
+  if (d.length === 11) return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+  if (d.length === 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return phone;
+}
+
 interface OrderItem { name: string; qty: number; unitPrice: number; variant?: Record<string, string> }
 interface Order {
   id: string; code: string; created_at: string; customer_name: string; customer_phone: string; customer_email: string;
@@ -28,8 +52,7 @@ const dateBR = (d: string) => new Date(`${d}T12:00:00`).toLocaleDateString("pt-B
 
 /** Link do WhatsApp para o celular do cliente, com mensagem pronta do status. */
 function whatsappLink(o: Order): string {
-  let phone = o.customer_phone.replace(/\D/g, "");
-  if (!phone.startsWith("55")) phone = `55${phone}`;
+  const phone = waNumber(o.customer_phone);
   const lines = [
     `Olá, ${o.customer_name.split(" ")[0]}! Aqui é da ${STORE.name}.`,
     `Seu pedido *${o.code}* está: *${ORDER_STATUS[o.status]}*.`,
@@ -62,15 +85,19 @@ export function AdminOrders() {
   };
 
   const shown = filter ? orders.filter((o) => o.status === filter) : orders;
+  const counts = orders.reduce<Partial<Record<Status, number>>>((acc, o) => ({ ...acc, [o.status]: (acc[o.status] ?? 0) + 1 }), {});
 
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-3">
-        <select aria-label="Filtrar por status" value={filter} onChange={(e) => setFilter(e.target.value as Status | "")} className="h-11 rounded-full border border-input bg-background px-4 text-sm">
-          <option value="">Todos os status</option>
-          {Object.entries(ORDER_STATUS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-        </select>
-        <span className="text-sm text-muted-foreground">{shown.length} pedido(s)</span>
+      <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar por status">
+        <button onClick={() => setFilter("")} aria-pressed={filter === ""} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${filter === "" ? "border-primary bg-primary text-primary-foreground" : "border-border"}`}>
+          Todos ({orders.length})
+        </button>
+        {(Object.keys(ORDER_STATUS) as Status[]).map((k) => (
+          <button key={k} onClick={() => setFilter(k)} aria-pressed={filter === k} className={`rounded-full border px-3 py-1.5 text-xs font-semibold ${filter === k ? "border-primary bg-primary text-primary-foreground" : "border-border"}`}>
+            {ORDER_STATUS[k]} ({counts[k] ?? 0})
+          </button>
+        ))}
         <button onClick={() => void load()} className="ml-auto inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm"><RefreshCw className="h-4 w-4" /> Atualizar</button>
       </div>
 
@@ -84,17 +111,23 @@ export function AdminOrders() {
             <li key={o.id} className="rounded-2xl border border-border p-5">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <div className="font-display text-lg font-bold">{o.code}</div>
+                  <div className="font-display text-lg font-bold">Pedido {o.code}</div>
                   <div className="text-xs text-muted-foreground">{new Date(o.created_at).toLocaleString("pt-BR")} · {PAY[o.payment_method] ?? o.payment_method} · {o.delivery_method === "entrega" ? "Entrega" : "Retirada"}</div>
                 </div>
-                <div className="text-right font-bold">{formatBRL(Number(o.total))}</div>
+                <div className="flex items-center gap-3">
+                  <span data-testid="order-status" className={`rounded-full px-3 py-1 text-xs font-semibold ${STATUS_COLOR[o.status] ?? ""}`}>{ORDER_STATUS[o.status] ?? o.status}</span>
+                  <span className="font-bold">{formatBRL(Number(o.total))}</span>
+                </div>
               </div>
               <div className="mt-3 grid gap-3 text-sm md:grid-cols-2">
                 <div>
-                  <b>{o.customer_name}</b> · {o.customer_phone}
+                  <b>{o.customer_name}</b>
+                  <a href={`https://wa.me/${waNumber(o.customer_phone)}`} target="_blank" rel="noopener noreferrer" className="mt-1 flex items-center gap-1.5 font-semibold text-accent hover:underline">
+                    <MessageCircle className="h-4 w-4" /> WhatsApp: {formatPhoneBR(o.customer_phone)}
+                  </a>
                   <div className="text-xs text-muted-foreground">{o.customer_email}</div>
                   {o.delivery_method === "entrega" && (
-                    <div className="mt-1 text-xs text-muted-foreground">{[o.address.street, o.address.number, o.address.complement, o.address.district, o.address.city].filter(Boolean).join(", ")}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">Entregar em: {[o.address.street, o.address.number, o.address.complement, o.address.district, o.address.city].filter(Boolean).join(", ")}</div>
                   )}
                 </div>
                 <ul className="text-xs">
@@ -112,8 +145,11 @@ export function AdminOrders() {
                 <label className="text-xs font-semibold text-muted-foreground">Prazo de entrega
                   <input type="date" value={o.delivery_eta ?? ""} onChange={(e) => void update(o, { delivery_eta: e.target.value || null })} className="mt-1 block h-10 rounded-xl border border-input bg-background px-3 text-sm text-foreground" />
                 </label>
-                <a href={whatsappLink(o)} target="_blank" rel="noopener noreferrer" className="ml-auto inline-flex h-10 items-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground">
-                  <MessageCircle className="h-4 w-4" /> Avisar cliente no WhatsApp
+                <label className="min-w-48 flex-1 text-xs font-semibold text-muted-foreground">Observações internas
+                  <input defaultValue={o.admin_notes} placeholder="Ex.: entregar após 18h" onBlur={(e) => { if (e.target.value !== o.admin_notes) void update(o, { admin_notes: e.target.value }); }} className="mt-1 block h-10 w-full rounded-xl border border-input bg-background px-3 text-sm text-foreground" />
+                </label>
+                <a href={whatsappLink(o)} target="_blank" rel="noopener noreferrer" className="inline-flex h-10 items-center gap-2 rounded-full bg-accent px-4 text-sm font-semibold text-accent-foreground">
+                  <MessageCircle className="h-4 w-4" /> Enviar status no WhatsApp
                 </a>
               </div>
             </li>
