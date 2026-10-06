@@ -216,6 +216,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      place_order: { Args: { _order: Json }; Returns: string }
     }
     Enums: {
       app_role: "admin" | "customer"

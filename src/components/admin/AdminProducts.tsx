@@ -13,7 +13,6 @@ interface DbProduct {
 }
 const EMPTY: DbProduct = { id: "", slug: "", name: "", brand: "", category: "", subcategory: "", description: "", price: 0, sale_price: null, stock: 0, image_url: "" };
 const localImg = new Map(LOCAL.map((p) => [p.id, p.images[0]]));
-const TEN_YEARS = 60 * 60 * 24 * 365 * 10;
 
 export function AdminProducts() {
   const { cats } = useDbCategories();
@@ -44,13 +43,13 @@ export function AdminProducts() {
     if (!file.type.startsWith("image/")) { toast.error("Escolha um arquivo de imagem."); return; }
     if (file.size > 5 * 1024 * 1024) { toast.error("A foto deve ter no máximo 5 MB."); return; }
     setBusy(true);
-    const path = `${editing.id || "novo"}-${Date.now()}.${file.name.split(".").pop() ?? "jpg"}`;
+    const ext = (file.name.split(".").pop() ?? "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+    const path = `${editing.id || "novo"}-${Date.now()}.${ext}`;
     const { error } = await supabase.storage.from("product-images").upload(path, file, { contentType: file.type });
-    if (error) { setBusy(false); { toast.error(`Erro ao enviar foto: ${error.message}`); return; } }
-    const { data, error: urlErr } = await supabase.storage.from("product-images").createSignedUrl(path, TEN_YEARS);
     setBusy(false);
-    if (urlErr || !data) { toast.error("Foto enviada, mas não foi possível gerar o link."); return; }
-    setEditing({ ...editing, image_url: data.signedUrl });
+    if (error) { toast.error(`Erro ao enviar foto: ${error.message}`); return; }
+    const { data } = supabase.storage.from("product-images").getPublicUrl(path);
+    setEditing({ ...editing, image_url: data.publicUrl });
     toast.success("Foto enviada! Clique em salvar.");
   };
 
@@ -73,6 +72,20 @@ export function AdminProducts() {
     toast.success("Produto salvo! Já aparece na loja.");
     setEditing(null);
     void load();
+  };
+
+  /** Edição rápida de preço/estoque direto na tabela. */
+  const quickSave = async (p: DbProduct, patch: Partial<Pick<DbProduct, "price" | "stock">>) => {
+    if (patch.price !== undefined && (!(patch.price > 0) || (p.sale_price && p.sale_price >= patch.price))) {
+      toast.error("Preço inválido (precisa ser maior que zero e maior que a promoção).");
+      return false;
+    }
+    if (patch.stock !== undefined) patch.stock = Math.max(0, Math.floor(patch.stock));
+    const { error } = await supabase.from("products").update(patch).eq("id", p.id);
+    if (error) { toast.error(`Erro ao salvar: ${error.message}`); return false; }
+    setProducts((list) => list.map((x) => (x.id === p.id ? { ...x, ...patch } : x)));
+    toast.success(`${p.name} atualizado.`);
+    return true;
   };
 
   const remove = async (p: DbProduct) => {
@@ -119,9 +132,13 @@ export function AdminProducts() {
                   </div>
                 </td>
                 <td className="px-4 py-3 text-muted-foreground">{cats.find((c) => c.slug === p.category)?.name ?? p.category} · {p.subcategory}</td>
-                <td className="px-4 py-3 text-right font-medium">{formatBRL(p.price)}</td>
+                <td className="px-4 py-3 text-right font-medium">
+                  <QuickNumber label={`Preço de ${p.name}`} value={p.price} step="0.01" display={formatBRL(p.price)} onSave={(v) => quickSave(p, { price: v })} />
+                </td>
                 <td className="px-4 py-3 text-right text-promo">{p.sale_price ? formatBRL(p.sale_price) : "—"}</td>
-                <td className={`px-4 py-3 text-right ${p.stock === 0 ? "font-semibold text-promo" : ""}`}>{p.stock}</td>
+                <td className={`px-4 py-3 text-right ${p.stock === 0 ? "font-semibold text-promo" : ""}`}>
+                  <QuickNumber label={`Estoque de ${p.name}`} value={p.stock} step="1" display={String(p.stock)} onSave={(v) => quickSave(p, { stock: v })} />
+                </td>
                 <td className="px-4 py-3">
                   <div className="flex justify-end gap-1">
                     <button onClick={() => setEditing({ ...p })} aria-label={`Editar ${p.name}`} className="grid h-9 w-9 place-items-center rounded-full hover:bg-secondary"><Pencil className="h-4 w-4" /></button>
@@ -167,6 +184,7 @@ export function AdminProducts() {
                   <input type="file" accept="image/*" className="sr-only" disabled={busy} onChange={(e) => { const f = e.target.files?.[0]; if (f) void upload(f); }} />
                 </label>
               </div>
+              <input value={editing.image_url} onChange={(e) => setEditing({ ...editing, image_url: e.target.value.trim() })} placeholder="ou cole o link da foto (https://…)" aria-label="Link da foto" className={inputCls + " mt-2"} />
             </div>
             <Field label="Descrição"><textarea value={editing.description} onChange={(e) => setEditing({ ...editing, description: e.target.value })} rows={3} className={inputCls + " h-auto py-2"} /></Field>
             <button onClick={save} disabled={busy} className="h-11 w-full rounded-full bg-primary text-sm font-semibold text-primary-foreground disabled:opacity-60">{busy ? "Aguarde…" : "Salvar produto"}</button>
@@ -174,5 +192,31 @@ export function AdminProducts() {
         </Modal>
       )}
     </div>
+  );
+}
+
+/** Valor clicável que vira campo numérico; Enter ou sair do campo salva, Esc cancela. */
+function QuickNumber({ label, value, display, step, onSave }: { label: string; value: number; display: string; step: string; onSave: (v: number) => Promise<boolean> }) {
+  const [draft, setDraft] = useState<string | null>(null);
+  if (draft === null) {
+    return (
+      <button type="button" aria-label={`Alterar ${label.toLowerCase()}`} title="Clique para alterar" onClick={() => setDraft(String(value))} className="rounded-lg px-2 py-1 hover:bg-secondary hover:underline">
+        {display}
+      </button>
+    );
+  }
+  const commit = async () => {
+    const v = Number(draft.replace(",", "."));
+    if (draft.trim() === "" || Number.isNaN(v) || v === value) { setDraft(null); return; }
+    if (await onSave(v)) setDraft(null);
+  };
+  return (
+    <input
+      autoFocus type="number" min="0" step={step} aria-label={label} value={draft}
+      onChange={(e) => setDraft(e.target.value)}
+      onBlur={() => void commit()}
+      onKeyDown={(e) => { if (e.key === "Enter") void commit(); if (e.key === "Escape") setDraft(null); }}
+      className="h-9 w-24 rounded-lg border border-accent bg-background px-2 text-right text-sm outline-none"
+    />
   );
 }

@@ -200,7 +200,7 @@ function CheckoutPage() {
                 <Field id="name" label="Nome completo" autoComplete="name" value={data.name ?? ""} onChange={set("name")} error={errors.name} className="sm:col-span-2" />
                 <Field id="email" label="E-mail" type="email" autoComplete="email" value={data.email ?? ""} onChange={set("email")} error={errors.email} />
                 <Field id="cpf" label="CPF" inputMode="numeric" placeholder="000.000.000-00" value={data.cpf ?? ""} onChange={set("cpf")} error={errors.cpf} />
-                <Field id="phone" label="Celular" type="tel" autoComplete="tel" placeholder="(11) 99999-9999" value={data.phone ?? ""} onChange={set("phone")} error={errors.phone} />
+                <Field id="phone" label="Celular (WhatsApp)" type="tel" autoComplete="tel" placeholder="(11) 99999-9999" value={data.phone ?? ""} onChange={set("phone")} error={errors.phone} />
               </div>
             )}
             {step === 1 && (
