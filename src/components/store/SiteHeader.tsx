@@ -173,9 +173,9 @@ export function SiteHeader() {
             <Heart className="h-5 w-5" />
             {favorites.length > 0 && <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-promo" />}
           </Link>
-          <button aria-label="Minha conta (em breve)" className="hidden h-10 w-10 place-items-center rounded-full hover:bg-secondary sm:grid" title="Em breve">
+          <Link to="/auth" aria-label="Minha conta" className="hidden h-10 w-10 place-items-center rounded-full hover:bg-secondary sm:grid" title="Entrar ou criar conta">
             <User className="h-5 w-5" />
-          </button>
+          </Link>
           <button
             aria-label={`Abrir carrinho, ${count} itens`}
             onClick={() => setDrawerOpen(true)}
