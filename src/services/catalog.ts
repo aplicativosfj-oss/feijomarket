@@ -1,28 +1,46 @@
 /**
- * Camada de dados do catálogo. Hoje lê dados mock locais; para migrar ao banco,
- * substitua o corpo destas funções por consultas — a interface permanece igual.
+ * Camada de dados do catálogo.
+ * Começa com os dados locais (usados na renderização no servidor e como fotos de reserva)
+ * e é substituída pelos dados do banco assim que `setCatalogData` é chamado (ver catalog-sync).
+ * A interface síncrona é mantida para não alterar os componentes da vitrine.
  */
-import { CATEGORIES, PRODUCTS, BRANDS } from "@/data/products";
-import type { Product } from "@/data/types";
+import { CATEGORIES as LOCAL_CATEGORIES, PRODUCTS as LOCAL_PRODUCTS } from "@/data/products";
+import type { Category, Product } from "@/data/types";
+
+let products: Product[] = LOCAL_PRODUCTS;
+let categories: Category[] = LOCAL_CATEGORIES;
+let brands: string[] = computeBrands(products);
+
+function computeBrands(list: Product[]): string[] {
+  return Array.from(new Set(list.map((p) => p.brand))).sort();
+}
+
+/** Substitui o catálogo em memória pelos dados vindos do banco. */
+export function setCatalogData(next: { products: Product[]; categories: Category[] }): void {
+  products = next.products;
+  categories = next.categories;
+  brands = computeBrands(products);
+}
 
 export const effectivePrice = (p: Product) => p.salePrice ?? p.price;
 export const discountPct = (p: Product) => (p.salePrice ? Math.round((1 - p.salePrice / p.price) * 100) : 0);
 
+const normalize = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
 export const catalog = {
-  categories: () => CATEGORIES,
-  category: (slug: string) => CATEGORIES.find((c) => c.slug === slug),
-  brands: () => BRANDS,
-  all: () => PRODUCTS,
-  bySlug: (slug: string) => PRODUCTS.find((p) => p.slug === slug),
-  byTag: (tag: Product["tags"][number], limit = 8) => PRODUCTS.filter((p) => p.tags.includes(tag)).slice(0, limit),
-  related: (p: Product, limit = 4) =>
-    PRODUCTS.filter((x) => x.category === p.category && x.id !== p.id).slice(0, limit),
+  categories: () => categories,
+  category: (slug: string) => categories.find((c) => c.slug === slug),
+  brands: () => brands,
+  all: () => products,
+  bySlug: (slug: string) => products.find((p) => p.slug === slug),
+  byTag: (tag: Product["tags"][number], limit = 8) => products.filter((p) => p.tags.includes(tag)).slice(0, limit),
+  related: (p: Product, limit = 4) => products.filter((x) => x.category === p.category && x.id !== p.id).slice(0, limit),
   search: (q: string, limit = 50) => {
-    const n = q.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const n = normalize(q.trim());
     if (!n) return [];
-    return PRODUCTS.filter((p) =>
-      `${p.name} ${p.brand} ${p.subcategory} ${p.category}`.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(n),
-    ).slice(0, limit);
+    return products
+      .filter((p) => normalize(`${p.name} ${p.brand} ${p.subcategory} ${p.category}`).includes(n))
+      .slice(0, limit);
   },
 };
 
