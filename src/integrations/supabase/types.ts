@@ -14,6 +14,102 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          created_at: string
+          image_url: string
+          name: string
+          slug: string
+          sort_order: number
+          subcategories: string[]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          image_url?: string
+          name: string
+          slug: string
+          sort_order?: number
+          subcategories?: string[]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          image_url?: string
+          name?: string
+          slug?: string
+          sort_order?: number
+          subcategories?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      orders: {
+        Row: {
+          address: Json
+          admin_notes: string
+          code: string
+          created_at: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          delivery_eta: string | null
+          delivery_method: string
+          discount: number
+          id: string
+          items: Json
+          payment_method: string
+          shipping: number
+          status: string
+          subtotal: number
+          total: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address?: Json
+          admin_notes?: string
+          code: string
+          created_at?: string
+          customer_email: string
+          customer_name: string
+          customer_phone: string
+          delivery_eta?: string | null
+          delivery_method: string
+          discount?: number
+          id?: string
+          items?: Json
+          payment_method: string
+          shipping?: number
+          status?: string
+          subtotal: number
+          total: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address?: Json
+          admin_notes?: string
+          code?: string
+          created_at?: string
+          customer_email?: string
+          customer_name?: string
+          customer_phone?: string
+          delivery_eta?: string | null
+          delivery_method?: string
+          discount?: number
+          id?: string
+          items?: Json
+          payment_method?: string
+          shipping?: number
+          status?: string
+          subtotal?: number
+          total?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           brand: string
