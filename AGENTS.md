@@ -15,3 +15,4 @@
 - Cart/favorites state lives in `ShopProvider` (`src/lib/shop.tsx`), persisted to localStorage until accounts exist.
 - AI product recommendations run server-side in `src/lib/recommend.server.ts` via Lovable AI Gateway, restricted to catalog IDs; the client only calls `recommend.functions.ts`.
 - Supabase client lives in `src/integrations/supabase/client.ts` (URL + publishable key only); server secrets go in a local `.env` (see `.env.example`), never committed.
+- Backend is Lovable Cloud; admin role is granted by the `claim_roles()` RPC called from `useAuth` after login (no triggers on auth schema), and checked via `has_role`.
