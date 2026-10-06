@@ -41,23 +41,23 @@ export function AdminProducts() {
 
   const upload = async (file: File) => {
     if (!editing) return;
-    if (!file.type.startsWith("image/")) return toast.error("Escolha um arquivo de imagem.");
-    if (file.size > 5 * 1024 * 1024) return toast.error("A foto deve ter no máximo 5 MB.");
+    if (!file.type.startsWith("image/")) { toast.error("Escolha um arquivo de imagem."); return; }
+    if (file.size > 5 * 1024 * 1024) { toast.error("A foto deve ter no máximo 5 MB."); return; }
     setBusy(true);
     const path = `${editing.id || "novo"}-${Date.now()}.${file.name.split(".").pop() ?? "jpg"}`;
     const { error } = await supabase.storage.from("product-images").upload(path, file, { contentType: file.type });
-    if (error) { setBusy(false); return toast.error(`Erro ao enviar foto: ${error.message}`); }
+    if (error) { setBusy(false); { toast.error(`Erro ao enviar foto: ${error.message}`); return; } }
     const { data, error: urlErr } = await supabase.storage.from("product-images").createSignedUrl(path, TEN_YEARS);
     setBusy(false);
-    if (urlErr || !data) return toast.error("Foto enviada, mas não foi possível gerar o link.");
+    if (urlErr || !data) { toast.error("Foto enviada, mas não foi possível gerar o link."); return; }
     setEditing({ ...editing, image_url: data.signedUrl });
     toast.success("Foto enviada! Clique em salvar.");
   };
 
   const save = async () => {
     if (!editing) return;
-    if (!editing.name.trim() || editing.price <= 0 || !editing.category) return toast.error("Preencha nome, categoria e preço maior que zero.");
-    if (editing.sale_price && editing.sale_price >= editing.price) return toast.error("O preço promocional deve ser menor que o preço normal.");
+    if (!editing.name.trim() || editing.price <= 0 || !editing.category) { toast.error("Preencha nome, categoria e preço maior que zero."); return; }
+    if (editing.sale_price && editing.sale_price >= editing.price) { toast.error("O preço promocional deve ser menor que o preço normal."); return; }
     setBusy(true);
     const row = {
       ...editing,
@@ -69,7 +69,7 @@ export function AdminProducts() {
     };
     const { error } = await supabase.from("products").upsert(row);
     setBusy(false);
-    if (error) return toast.error(`Erro ao salvar: ${error.message}`);
+    if (error) { toast.error(`Erro ao salvar: ${error.message}`); return; }
     toast.success("Produto salvo! Já aparece na loja.");
     setEditing(null);
     void load();
@@ -78,7 +78,7 @@ export function AdminProducts() {
   const remove = async (p: DbProduct) => {
     if (!confirm(`Apagar "${p.name}"?`)) return;
     const { error } = await supabase.from("products").delete().eq("id", p.id);
-    if (error) return toast.error(`Erro ao apagar: ${error.message}`);
+    if (error) { toast.error(`Erro ao apagar: ${error.message}`); return; }
     toast.success("Produto apagado.");
     void load();
   };
