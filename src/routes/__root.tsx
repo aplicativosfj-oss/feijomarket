@@ -43,31 +43,59 @@ function NotFoundComponent() {
   );
 }
 
+/** Depois de publicar uma versão nova, abas abertas antes tentam baixar arquivos que não existem mais. */
+const isStaleChunkError = (error: unknown) =>
+  /dynamically imported module|Importing a module script failed|error loading dynamically imported module|Unable to preload CSS/i.test(
+    error instanceof Error ? error.message : String(error),
+  );
+const RELOAD_KEY = "fm:stale-reload";
+
+/** Recarrega a página uma vez (no máximo a cada 10 s) para pegar a versão nova do site. */
+function reloadForNewVersion(): boolean {
+  try {
+    const last = Number(sessionStorage.getItem(RELOAD_KEY) ?? 0);
+    if (Date.now() - last < 10_000) return false;
+    sessionStorage.setItem(RELOAD_KEY, String(Date.now()));
+  } catch {
+    // sem sessionStorage: recarrega mesmo assim
+  }
+  window.location.reload();
+  return true;
+}
+
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
+  const stale = isStaleChunkError(error);
   useEffect(() => {
+    if (stale && reloadForNewVersion()) return;
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
+  }, [error, stale]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+          {stale ? "O site foi atualizado" : "Esta página não carregou"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+          {stale
+            ? "Recarregue a página para abrir a versão mais nova."
+            : "Algo deu errado do nosso lado. Tente recarregar ou volte ao início."}
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
+              if (stale) {
+                window.location.reload();
+                return;
+              }
               router.invalidate();
               reset();
             }}
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            {stale ? "Recarregar" : "Tentar de novo"}
           </button>
           <a
             href="/"
@@ -127,6 +155,15 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   // Quando o catálogo do banco chega, a versão muda e a vitrine é redesenhada com ele.
   const catalogVersion = useCatalogSync();
+
+  // Falha ao pré-carregar um arquivo de versão antiga: recarrega antes de quebrar a página.
+  useEffect(() => {
+    const onPreloadError = (e: Event) => {
+      if (reloadForNewVersion()) e.preventDefault();
+    };
+    window.addEventListener("vite:preloadError", onPreloadError);
+    return () => window.removeEventListener("vite:preloadError", onPreloadError);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
