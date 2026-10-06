@@ -18,6 +18,7 @@ import { SiteFooter } from "@/components/store/SiteFooter";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { CookieBanner, WhatsAppButton } from "@/components/store/Floating";
 import { Toaster } from "@/components/ui/sonner";
+import { useCatalogSync } from "@/lib/catalog-sync";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -124,14 +125,16 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  // Quando o catálogo do banco chega, a versão muda e a vitrine é redesenhada com ele.
+  const catalogVersion = useCatalogSync();
 
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <ShopProvider>
         <a href="#conteudo" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground">Pular para o conteúdo</a>
-        <SiteHeader />
-        <main id="conteudo" className="min-h-[60vh]">
+        <SiteHeader key={`h${catalogVersion}`} />
+        <main id="conteudo" className="min-h-[60vh]" key={`m${catalogVersion}`}>
           <Outlet />
         </main>
         <SiteFooter />
